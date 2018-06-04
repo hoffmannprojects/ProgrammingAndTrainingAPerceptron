@@ -213,11 +213,11 @@ MonoBehaviour:
   - inputs:
     - 0
     - 1
-    expectedOutput: 1
+    expectedOutput: 0
   - inputs:
     - 1
     - 0
-    expectedOutput: 1
+    expectedOutput: 0
   - inputs:
     - 1
     - 1
