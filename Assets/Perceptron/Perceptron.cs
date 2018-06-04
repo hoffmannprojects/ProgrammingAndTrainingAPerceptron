@@ -43,6 +43,8 @@ public class Perceptron : MonoBehaviour
 
     [SerializeField]
     private TrainingSet[] trainingSets;
+    [SerializeField]
+    private SimpleGrapher simpleGrapher;
     // There have to be as many weights as inputs.
     private double[] weights = { 0, 0 };
     private double bias = 0;
@@ -54,13 +56,35 @@ public class Perceptron : MonoBehaviour
     // Use this for initialization
     private void Start () 
 	{
-        Train(8);
+        DrawAllPoints();
+        // Training iterations.
+        Train(100);
+        // Draw decision boundary (separation line).
+        simpleGrapher.DrawRay((float)(-(bias / weights[1]) / (bias / weights[0])), (float)(-bias / weights[1]), Color.red);
 
-        // Testing cases of or-statement:
-        Debug.Log("Test 0 0: " + CalculateOutput(0, 0));
-        Debug.Log("Test 0 1: " + CalculateOutput(0, 1));
-        Debug.Log("Test 1 0: " + CalculateOutput(1, 0));
-        Debug.Log("Test 1 1: " + CalculateOutput(1, 1));
+        // Testing cases:
+
+        // Test 1
+        // Should be classified as food.
+        double sharpness = 0.3;
+        double edibility = 0.9;
+        // classified as a weapon (0).
+        if (CalculateOutput(sharpness, edibility) == 0)
+            simpleGrapher.DrawPoint((float)sharpness,(float)edibility, Color.red);
+        // classified as food (1 or not 0).
+        else
+            simpleGrapher.DrawPoint((float)sharpness,(float)edibility, Color.yellow);
+
+        // Test 2
+        // Should be classified as weapon.
+        sharpness = 0.8;
+        edibility = 0.1;
+        // classified as a weapon (0).
+        if (CalculateOutput(sharpness, edibility) == 0)
+            simpleGrapher.DrawPoint((float)sharpness, (float)edibility, Color.red);
+        // classified as food (1 or not 0).
+        else
+            simpleGrapher.DrawPoint((float)sharpness, (float)edibility, Color.yellow);
     }
 
     private void Train (int epochs)
@@ -141,5 +165,18 @@ public class Perceptron : MonoBehaviour
         }
         dotProductPlusBias += bias;
         return dotProductPlusBias;
+    }
+
+    private void DrawAllPoints ()
+    {
+        for (var t = 0; t < trainingSets.Length; t++)
+        {
+            // Items.
+            if (trainingSets[t].ExpectedOutput == 0)
+                simpleGrapher.DrawPoint((float)trainingSets[t].Inputs[0], (float)trainingSets[t].Inputs[1], Color.magenta);
+            // Food.
+            else
+                simpleGrapher.DrawPoint((float)trainingSets[t].Inputs[0], (float)trainingSets[t].Inputs[1], Color.green);
+        }
     }
 }
