@@ -213,15 +213,15 @@ MonoBehaviour:
   - inputs:
     - 0
     - 1
-    expectedOutput: 0
+    expectedOutput: 1
   - inputs:
     - 1
     - 0
-    expectedOutput: 0
+    expectedOutput: 1
   - inputs:
     - 1
     - 1
-    expectedOutput: 1
+    expectedOutput: 0
 --- !u!4 &274947293
 Transform:
   m_ObjectHideFlags: 0
